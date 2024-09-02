@@ -42,6 +42,18 @@ router.get("/get-all-barang", (req, res) => {
     });
 });
 
+router.get("/get/:jenis", (req, res) => {
+  // console.log(req.params.jenis);
+  barangController
+    .getJenis(req.params.jenis)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
 router.get("/get-barang-by-id/:idBarang", (req, res) => {
   console.log(req.params.idBarang);
   barangController

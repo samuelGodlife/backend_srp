@@ -19,6 +19,32 @@ exports.input = (data) =>
       });
   });
 
+exports.getJenis = (jenis) =>
+  new Promise((resolve, reject) => {
+    barangModels
+      .find({ jenis: jenis })
+      .then((barangs) => {
+        if (barangs.length > 0) {
+          resolve({
+            status: true,
+            msg: "Berhasil memuat data",
+            data: barangs,
+          });
+        } else {
+          reject({
+            status: false,
+            msg: "Tidak ada data",
+          });
+        }
+      })
+      .catch((err) => {
+        reject({
+          status: false,
+          msg: "Terjadi kesalahan pada server",
+        });
+      });
+  });
+
 exports.getAllBarang = () =>
   new Promise((resolve, reject) => {
     barangModels

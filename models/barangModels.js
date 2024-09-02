@@ -23,6 +23,9 @@ const barangScheme = new mongoose.Schema({
   gambar: {
     type: String,
   },
+  rating: {
+    type: Number,
+  },
 });
 
 module.exports = mongoose.model("wisata", barangScheme);
