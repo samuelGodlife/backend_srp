@@ -1,4 +1,4 @@
-const kategoriModel = require("../models/kategoriModel");
+const kategoriModel = require("../models/ulasanModel");
 const objectId = require("mongoose").Types.ObjectId;
 
 exports.inputKategori = (data) =>
@@ -8,7 +8,7 @@ exports.inputKategori = (data) =>
       .then(() => {
         resolve({
           status: true,
-          msg: "Berhasil menambahkan kategori",
+          msg: "Berhasil menambahkan ulasan",
         });
       })
       .catch((err) => {
@@ -36,7 +36,7 @@ exports.updateKategoriById = (id, data) =>
             .then(() => {
               resolve({
                 status: true,
-                msg: "Berhasil Update kategori",
+                msg: "Berhasil Update Ulasan",
               });
             })
             .catch((err) => {
@@ -60,10 +60,13 @@ exports.updateKategoriById = (id, data) =>
       });
   });
 
-exports.getAllKategori = () =>
+exports.getAllKategori = (idUser) =>
   new Promise((resolve, reject) => {
+    console.log(idUser);
     kategoriModel
-      .find()
+      .find({
+        nama_wisata: idUser,
+      })
       .then((kategori) => {
         if (kategori.length > 0) {
           resolve({

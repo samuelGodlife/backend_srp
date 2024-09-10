@@ -29,6 +29,7 @@ app.use("/kategori", require("./routes/kategoriRoutes"));
 app.use("/barang", require("./routes/barangRoutes"));
 app.use("/keranjang", require("./routes/keranjangRoutes"));
 app.use("/transaksi", require("./routes/transaksiRoutes"));
+app.use("/ulasan", require("./routes/ulasanRoutes"));
 
 app.use("/gambar-barang", express.static("public/images"));
 

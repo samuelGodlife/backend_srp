@@ -95,3 +95,82 @@ exports.getAllUser = () =>
         });
       });
   });
+
+exports.getId = (id) =>
+  new Promise((resolve, reject) => {
+    console.log(id);
+    userModel
+      .find({
+        _id: id,
+      })
+      .then((user) => {
+        console.log(user.length);
+        console.log("ANJADNJAD");
+        if (user.length > 0) {
+          console.log(user);
+          resolve({
+            status: true,
+            msg: "Berhasil memuat data",
+            data: user,
+          });
+        } else {
+          reject({
+            status: false,
+            msg: "Tidak ada data",
+          });
+        }
+      })
+      .catch((err) => {
+        reject({
+          status: false,
+          msg: "Terjadi kesalahan pada server",
+        });
+      });
+  });
+
+exports.updateUser = (id, data) =>
+  new Promise((resolve, reject) => {
+    console.log(id);
+    userModel
+      .findOne({ _id: id })
+      .then((user) => {
+        console.log("apa ini");
+        // console.log(user);
+        if (user) {
+          // Menambahkan 5 ke poin yang sudah ada, atau set ke 5 jika belum ada
+          // console.log(user);
+          console.log(user);
+          const newPoint = (user.point || 0) + 5;
+          const updatedData = {
+            ...data,
+            point: newPoint,
+          };
+          console.log(updatedData);
+          userModel
+            .updateOne({ _id: id }, updatedData)
+            .then(() => {
+              resolve({
+                status: true,
+                msg: "Berhasil Update user dan tambah 5 poin",
+              });
+            })
+            .catch((err) => {
+              reject({
+                status: false,
+                msg: "Terjadi kesalahan saat mengupdate user",
+              });
+            });
+        } else {
+          reject({
+            status: false,
+            msg: "User tidak ditemukan",
+          });
+        }
+      })
+      .catch((error) => {
+        reject({
+          status: false,
+          msg: "Terjadi kesalahan saat mencari user",
+        });
+      });
+  });

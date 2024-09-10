@@ -38,6 +38,17 @@ router.post("/inputKategori", (req, res) => {
     });
 });
 
+router.put("/update/:id", (req, res) => {
+  controllerUser
+    .updateUser(req.params.id, req.body)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
 router.get("/user-get-all", (req, res) => {
   controllerUser
     .getAllUser(req.body)
@@ -49,6 +60,16 @@ router.get("/user-get-all", (req, res) => {
     });
 });
 
+router.get("/user-get-id/:id", (req, res) => {
+  controllerUser
+    .getId(req.params.id)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
 module.exports = router;
 
 //app.use('/users', require())
