@@ -49,6 +49,17 @@ router.put("/update/:id", (req, res) => {
     });
 });
 
+router.put("/updateWeb/:id", (req, res) => {
+  controllerUser
+    .updateWeb(req.params.id, req.body)
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
 router.get("/user-get-all", (req, res) => {
   controllerUser
     .getAllUser(req.body)

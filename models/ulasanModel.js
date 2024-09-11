@@ -14,6 +14,9 @@ const barangScheme = new mongoose.Schema({
   rating: {
     type: Number,
   },
+  total_rating: {
+    type: Number,
+  },
   tgl: {
     type: String,
   },

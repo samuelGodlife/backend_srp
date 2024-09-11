@@ -42,6 +42,17 @@ router.get("/get-all-barang", (req, res) => {
     });
 });
 
+router.get("/get-rekomendasi", (req, res) => {
+  barangController
+    .getRekomendasi()
+    .then((result) => {
+      res.json(result);
+    })
+    .catch((err) => {
+      res.json(err);
+    });
+});
+
 router.get("/get/:jenis", (req, res) => {
   // console.log(req.params.jenis);
   barangController

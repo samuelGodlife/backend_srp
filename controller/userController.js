@@ -104,8 +104,6 @@ exports.getId = (id) =>
         _id: id,
       })
       .then((user) => {
-        console.log(user.length);
-        console.log("ANJADNJAD");
         if (user.length > 0) {
           console.log(user);
           resolve({
@@ -152,6 +150,45 @@ exports.updateUser = (id, data) =>
               resolve({
                 status: true,
                 msg: "Berhasil Update user dan tambah 5 poin",
+              });
+            })
+            .catch((err) => {
+              reject({
+                status: false,
+                msg: "Terjadi kesalahan saat mengupdate user",
+              });
+            });
+        } else {
+          reject({
+            status: false,
+            msg: "User tidak ditemukan",
+          });
+        }
+      })
+      .catch((error) => {
+        reject({
+          status: false,
+          msg: "Terjadi kesalahan saat mencari user",
+        });
+      });
+  });
+
+exports.updateWeb = (id, data) =>
+  new Promise((resolve, reject) => {
+    console.log(id);
+    userModel
+      .findOne({ _id: id })
+      .then((user) => {
+        console.log("apa ini");
+
+        if (user) {
+          console.log(user);
+          userModel
+            .updateOne({ _id: id }, data)
+            .then(() => {
+              resolve({
+                status: true,
+                msg: "Berhasil Update user",
               });
             })
             .catch((err) => {

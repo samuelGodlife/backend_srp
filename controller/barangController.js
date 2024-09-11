@@ -1,4 +1,5 @@
 const barangModels = require("../models/barangModels");
+const rating = require("../models/ulasanModel");
 const objectId = require("mongoose").Types.ObjectId;
 
 exports.input = (data) =>
@@ -67,6 +68,35 @@ exports.getAllBarang = () =>
         reject({
           status: false,
           msg: "Terjadi kesalahan pada server",
+        });
+      });
+  });
+exports.getRekomendasi = () =>
+  new Promise((resolve, reject) => {
+    barangModels
+      .find({})
+      .sort({ rating: -1 }) // Mengurutkan berdasarkan rating tertinggi
+      .limit(5) // Membatasi hasil menjadi 5 data
+      .then((barangs) => {
+        if (barangs.length > 0) {
+          console.log(barangs);
+          resolve({
+            status: true,
+            msg: "Berhasil memuat data",
+            data: barangs,
+          });
+        } else {
+          reject({
+            status: false,
+            msg: "Tidak ada data",
+          });
+        }
+      })
+      .catch((err) => {
+        reject({
+          status: false,
+          msg: "Terjadi kesalahan pada server",
+          error: err,
         });
       });
   });

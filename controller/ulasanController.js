@@ -1,29 +1,60 @@
 const kategoriModel = require("../models/ulasanModel");
+const barangModel = require("../models/barangModels");
 const objectId = require("mongoose").Types.ObjectId;
 
 exports.inputKategori = (data) =>
   new Promise(async (resolve, reject) => {
-    kategoriModel
-      .create(data)
-      .then(() => {
-        resolve({
-          status: true,
-          msg: "Berhasil menambahkan ulasan",
-        });
-      })
-      .catch((err) => {
-        reject({
-          status: false,
-          msg: "Terjadi kesalahan",
-        });
+    try {
+      // Mencari semua ulasan berdasarkan nama_wisata
+      const kategori = await kategoriModel.find({
+        nama_wisata: data.nama_wisata,
       });
-  }).catch((err) => {
-    reject({
-      status: false,
-      msg: "Terjadi kesalahan",
-    });
+
+      console.log(kategori);
+
+      // Menghitung total rating saat ini dan jumlah ulasan yang ada
+      let totalRating = 0;
+      let jumlahUlasan = kategori.length;
+
+      kategori.forEach((ulasan) => {
+        totalRating += ulasan.rating;
+      });
+
+      // Tambahkan rating ulasan baru ke total rating
+      totalRating += data.rating;
+      jumlahUlasan += 1; // Tambah 1 untuk ulasan baru
+
+      // Hitung rata-rata rating
+      const rataRataRating = parseFloat(
+        (totalRating / jumlahUlasan).toFixed(1)
+      );
+
+      // Menyimpan data ulasan baru
+      data.total_rating = rataRataRating;
+      console.log(data.total_rating);
+      console.log(data);
+
+      await kategoriModel.create(data);
+
+      await barangModel.updateOne(
+        { nama_wisata: data.nama_wisata },
+        { $set: { rating: rataRataRating } }
+      );
+
+      resolve({
+        status: true,
+        msg: "Berhasil Tambah Ulasan",
+        // rataRataRating: rataRataRating,
+        // jumlahUlasan: jumlahUlasan,
+      });
+    } catch (err) {
+      reject({
+        status: false,
+        msg: "Terjadi kesalahan",
+        error: err,
+      });
+    }
   });
-// })
 
 exports.updateKategoriById = (id, data) =>
   new Promise((resolve, reject) => {
